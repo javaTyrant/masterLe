@@ -218,6 +218,7 @@ public class Day0719 {
         System.out.println(findKthLargest0(arr, 3));
     }
 
+    //第k大的,也就是第nums.length - k小的.
     public int findKthLargest0(int[] nums, int k) {
         return quickSelect(nums, 0, nums.length - 1, nums.length - k);
     }
@@ -227,6 +228,7 @@ public class Day0719 {
         if (q == index) {
             return a[q];
         } else {
+            //基准小于index.
             return q < index ? quickSelect(a, q + 1, r, index) : quickSelect(a, l, q - 1, index);
         }
     }
@@ -235,7 +237,7 @@ public class Day0719 {
     public int randomPartition(int[] a, int l, int r) {
         int i = l;
         swap(a, i, r);
-        return partition(a, l, r);
+        return partition0(a, l, r);
     }
 
     public int partition(int[] a, int l, int r) {
@@ -247,6 +249,54 @@ public class Day0719 {
         }
         swap(a, i + 1, r);
         return i + 1;
+    }
+
+    @Test
+    public void testPartition() {
+        int[] arr = {3, 3, 3, 3, 3};
+        int[] arr1 = {2, 1, 3, -1, 5};
+        partition0(arr, 0, arr.length - 1);
+        System.out.println(Arrays.toString(arr));
+        partition0(arr1, 0, arr1.length - 1);
+        System.out.println(Arrays.toString(arr1));
+    }
+
+    private static int partition0(int[] arr, int l, int r) {
+        //先找一个pivot
+        int temp = arr[l];
+        while (l < r) {
+            //找到arr[r]小于temp的
+            while (l < r && arr[r] >= temp) r--;
+            //交换
+            if (l < r) arr[l] = arr[r];
+            //找到arr[l]大于等于temp的
+            while (l < r && arr[l] < temp) l++;
+            //交换
+            if (l < r) arr[r] = arr[l];
+        }
+        //l==r的时候退出循环
+        arr[l] = temp;
+        return l;
+    }
+
+    @Test
+    public void test_par() {
+        int[] arr = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+        par(arr, 0, arr.length - 1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private void par(int[] arr, int left, int right) {
+        int temp = arr[left];
+        while (left < right && arr[right] >= temp) {
+            right--;
+        }
+        if (left < right) arr[left] = arr[right];
+        while (left < right && arr[left] < temp) {
+            left++;
+        }
+        if (left < right) arr[right] = arr[left];
+        arr[left] = temp;
     }
 
     public static void swap(int[] a, int i, int j) {
