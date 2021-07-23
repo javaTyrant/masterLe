@@ -1,6 +1,9 @@
 package day;
 
+import org.junit.Test;
+
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * @author lufengxiang
@@ -157,17 +160,12 @@ public class Day0719 {
         }
     }
 
-    public static void swap(int[] nums, int left, int right) {
-        int temp = nums[left];
-        nums[left] = nums[right];
-        nums[right] = temp;
-    }
-
     //颜色分类:荷兰国旗问题.
     public static void sortColors(int[] nums) {
         //双指针
         int low = 0, high = nums.length - 1;
         int i = 0;
+        //i为什么要==high
         while (i <= high) {
             if (nums[i] == 0) {
                 swap(nums, low, i);
@@ -210,5 +208,50 @@ public class Day0719 {
         } else { //第k大的元素位于右侧
             return quickSort(arr, j + 1, high, k);
         }
+    }
+
+    Random random = new Random();
+
+    @Test
+    public void testFindKthLargest0() {
+        int[] arr = {3, 1, 2, 4, 5};
+        System.out.println(findKthLargest0(arr, 3));
+    }
+
+    public int findKthLargest0(int[] nums, int k) {
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+    }
+
+    public int quickSelect(int[] a, int l, int r, int index) {
+        int q = partition(a, l, r);
+        if (q == index) {
+            return a[q];
+        } else {
+            return q < index ? quickSelect(a, q + 1, r, index) : quickSelect(a, l, q - 1, index);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public int randomPartition(int[] a, int l, int r) {
+        int i = l;
+        swap(a, i, r);
+        return partition(a, l, r);
+    }
+
+    public int partition(int[] a, int l, int r) {
+        int x = a[r], i = l - 1;
+        for (int j = l; j < r; ++j) {
+            if (a[j] <= x) {
+                swap(a, ++i, j);
+            }
+        }
+        swap(a, i + 1, r);
+        return i + 1;
+    }
+
+    public static void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 }

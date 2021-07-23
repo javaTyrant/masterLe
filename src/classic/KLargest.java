@@ -8,6 +8,7 @@ import java.util.Queue;
  * @since 2021/7/19
  **/
 public class KLargest {
+    //数组中的第 K 个最大元素
     public int findKthLargest(int[] nums, int k) {
         return quickSort(nums, 0, nums.length - 1, k - 1);
     }
