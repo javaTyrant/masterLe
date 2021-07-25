@@ -93,11 +93,13 @@ public class Day0725 {
             return nums[0] == target;
         }
         int l = 0, r = n - 1;
+        //
         while (l <= r) {
             int mid = (l + r) / 2;
             if (nums[mid] == target) {
                 return true;
             }
+            //重复元素的处理.
             if (nums[l] == nums[mid] && nums[mid] == nums[r]) {
                 ++l;
                 --r;
