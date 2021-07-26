@@ -1,5 +1,6 @@
-package day;
+package day.day;
 
+import org.junit.Test;
 import util.Link;
 
 import java.util.*;
@@ -138,15 +139,16 @@ public class Day0721 implements Link {
         int left = 0, right = height.length - 1;
         //
         while (left < right) {
-            //
+            //如果左边的最大值小于右边的:处理短的
             if (maxLeft < height[right]) {
+                //更新maxLeft
                 if (maxLeft < height[left]) {
                     maxLeft = height[left];
-                } else {
+                } else {//计算
                     res += maxLeft - height[left];
                     left++;
                 }
-            } else {
+            } else {//如果右边的最大值
                 if (maxRight < height[right]) {
                     maxRight = height[right];
                 } else {
@@ -443,12 +445,16 @@ public class Day0721 implements Link {
         return i == name.length();
     }
 
-    //有序数组的平方:[-4,-1,0,3,10]
+    //有序数组的平方:[-4,-1,0,3,10]:优美!!!
     public int[] sortedSquares(int[] nums) {
         int n = nums.length;
+        //返回值
         int[] ans = new int[n];
+        //
         for (int i = 0, j = n - 1, pos = n - 1; i <= j; ) {
+            //从两端选个最大的
             if (nums[i] * nums[i] > nums[j] * nums[j]) {
+                //
                 ans[pos] = nums[i] * nums[i];
                 ++i;
             } else {
@@ -503,5 +509,26 @@ public class Day0721 implements Link {
             }
         }
         return Collections.emptyList();
+    }
+
+    //插入排序:如何证明正确性呢?
+    public void insertSort(int[] arr) {
+        if (arr.length < 2) return;
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] < key) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    @Test
+    public void testInsertSort() {
+        int[] arr = {3, 1, 2, 5, 1,4};
+        insertSort(arr);
+        System.out.println(Arrays.toString(arr));
     }
 }
